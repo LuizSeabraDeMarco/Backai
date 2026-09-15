@@ -1,606 +1,465 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inspireteen | Execução Real para Impacto Social</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <style>
-        :root {
-            --bg-midnight: #0a0a0c;
-            --primary-v5: #007aff;
-            --accent-v5: #a855f7;
-            --text-v5-main: #ffffff;
-            --text-v5-muted: #86868b;
-            --glass-v5: rgba(255, 255, 255, 0.05);
-            --border-v5: rgba(255, 255, 255, 0.1);
-            --transition-v5: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            --font-v5: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            --status-open: #34c759;
-            --status-closed: #ff3b30;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-        html, body { width: 100%; min-height: 100vh; background-color: var(--bg-midnight); color: var(--text-v5-main); font-family: var(--font-v5); overflow-x: hidden; scroll-behavior: smooth; }
-        .container { width: 90%; max-width: 1300px; margin: 0 auto; }
-        h1 { font-size: clamp(2.5rem, 8vw, 6rem); font-weight: 900; line-height: 0.95; letter-spacing: -3px; margin-bottom: 30px; }
-        h2 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 800; letter-spacing: -2px; }
-        h3 { font-size: 1.8rem; font-weight: 700; }
-        .gradient-v5 { background: linear-gradient(135deg, var(--primary-v5), var(--accent-v5)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .italic-v5 { font-style: italic; font-weight: 300; }
-        .label-v5 { display: inline-block; padding: 10px 20px; background: var(--glass-v5); border: 1px solid var(--border-v5); border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--text-v5-muted); margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1.5px; }
-        .section-subtitle { display: block; color: var(--primary-v5); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 10px; }
-        .navbar-v5 { position: fixed; top: 0; width: 100%; z-index: 1000; padding: 25px 0; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(20px); border-bottom: 1px solid transparent; transition: var(--transition-v5); }
-        .navbar-v5 nav { display: flex; justify-content: space-between; align-items: center; }
-        .logo-v5 { font-size: 1.8rem; font-weight: 900; letter-spacing: -1.5px; }
-        .logo-v5 span { color: var(--primary-v5); }
-        .nav-actions { display: flex; gap: 40px; align-items: center; }
-        .nav-link-v5 { color: var(--text-v5-muted); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: var(--transition-v5); }
-        .nav-link-v5:hover { color: var(--text-v5-main); }
-        .btn-v5-primary { padding: 12px 24px; background: var(--primary-v5); color: #fff; border-radius: 12px; font-weight: 700; text-decoration: none; transition: var(--transition-v5); border: none; cursor: pointer; }
-        .btn-v5-primary:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3); }
-        .btn-v5-primary.disabled { background: var(--text-v5-muted); cursor: not-allowed; opacity: 0.6; }
-        .btn-v5-primary.disabled:hover { transform: none; box-shadow: none; }
-        .btn-v5-outline { padding: 12px 24px; border: 1px solid var(--border-v5); color: var(--text-v5-main); border-radius: 12px; font-weight: 700; text-decoration: none; transition: var(--transition-v5); background: transparent; cursor: pointer; }
-        .btn-v5-outline:hover { background: #fff; color: #000; border-color: #fff; }
-        .mobile-toggle-v5 { display: none; font-size: 1.5rem; cursor: pointer; }
-        .hero-v5 { padding: 200px 0 120px; text-align: center; }
-        .hero-bottom { margin-top: 60px; max-width: 800px; margin-left: auto; margin-right: auto; }
-        .hero-bottom p { font-size: 1.4rem; color: var(--text-v5-muted); line-height: 1.6; margin-bottom: 40px; }
-        .hero-btns-v5 { display: flex; flex-direction: column; align-items: center; gap: 30px; }
-        .btn-v5-large { padding: 20px 40px; background: #fff; color: #000; font-size: 1.2rem; font-weight: 800; border-radius: 16px; text-decoration: none; transition: var(--transition-v5); }
-        .btn-v5-large:hover { transform: scale(1.05); box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1); }
-        .section-header-v5 { text-align: center; margin-bottom: 80px; max-width: 700px; margin-left: auto; margin-right: auto; }
-        .section-header-v5 p { color: var(--text-v5-muted); font-size: 1.2rem; margin-top: 15px; }
-        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(250px, auto); gap: 20px; }
-        .bento-item { background: var(--glass-v5); border: 1px solid var(--border-v5); border-radius: 32px; padding: 40px; display: flex; flex-direction: column; justify-content: flex-start; transition: var(--transition-v5); overflow: visible; position: relative; min-height: 250px; }
-        .bento-item:hover { border-color: rgba(255, 255, 255, 0.3); background: rgba(255, 255, 255, 0.08); }
-        .bento-icon { font-size: 2.5rem; color: var(--primary-v5); margin-bottom: 20px; display: flex; align-items: center; justify-content: flex-start; height: 40px; }
-        .bento-item h3 { margin-bottom: 10px; }
-        .bento-item p { color: var(--text-v5-muted); line-height: 1.5; font-size: 0.95rem; }
-        .bento-large { grid-column: span 2; grid-row: span 2; justify-content: center; }
-        .bento-large h2 { margin-bottom: 20px; }
-        .bento-large p { font-size: 1.2rem; }
-        .bento-medium { grid-column: span 2; }
-        .how-it-works-v5, .ongs-v5, .bento-section { padding: 120px 0; }
-        .ongs-grid-v5 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
-        .ong-card-v5 { background: var(--glass-v5); border: 1px solid var(--border-v5); border-radius: 32px; overflow: hidden; transition: var(--transition-v5); display: flex; flex-direction: column; }
-        .ong-card-v5:hover { transform: translateY(-10px); border-color: var(--primary-v5); }
-        .ong-img-v5 { height: 300px; background-size: cover; background-position: center; position: relative; }
-        .ong-overlay-v5 { position: absolute; bottom: 0; width: 100%; height: 50%; background: linear-gradient(to top, var(--bg-midnight), transparent); }
-        .ong-body-v5 { padding: 40px; margin-top: -40px; position: relative; flex-grow: 1; display: flex; flex-direction: column; }
-        .bento-tag { display: inline-block; padding: 6px 12px; background: var(--primary-v5); border-radius: 8px; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; align-self: flex-start; }
-        .status-tag { display: inline-block; padding: 4px 10px; border-radius: 6px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-left: 10px; vertical-align: middle; }
-        .status-tag.open { background: rgba(52, 199, 89, 0.2); color: var(--status-open); border: 1px solid var(--status-open); }
-        .status-tag.closed { background: rgba(255, 59, 48, 0.2); color: var(--status-closed); border: 1px solid var(--status-closed); }
-        .ong-body-v5 h3 { font-size: 2rem; margin-bottom: 15px; }
-        .ong-body-v5 p { color: var(--text-v5-muted); margin-bottom: 30px; line-height: 1.6; }
-        .ong-actions-v5 { display: flex; gap: 15px; margin-top: auto; flex-wrap: wrap; }
-        .cta-v5 { padding: 120px 0; text-align: center; }
-        .cta-box { background: linear-gradient(135deg, rgba(0, 122, 255, 0.1), rgba(168, 85, 247, 0.1)); border: 1px solid var(--border-v5); border-radius: 48px; padding: 80px 40px; backdrop-filter: blur(10px); }
-        .cta-box h2 { margin-bottom: 20px; }
-        .cta-box p { color: var(--text-v5-muted); font-size: 1.2rem; margin-bottom: 40px; }
-        .cta-buttons { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        .footer-v5 { padding: 100px 0 50px; border-top: 1px solid var(--border-v5); }
-        .footer-top-v5 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 60px; }
-        .footer-links-v5 { display: flex; gap: 40px; }
-        .footer-links-v5 a { color: var(--text-v5-muted); text-decoration: none; font-weight: 600; transition: var(--transition-v5); }
-        .footer-links-v5 a:hover { color: var(--text-v5-main); }
-        .footer-links-v5 i { margin-right: 8px; }
-        .footer-bottom-v5 { display: flex; justify-content: space-between; color: var(--text-v5-muted); font-size: 0.9rem; }
-
-        /* MODAL STYLES */
-        .modal-v5 {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .modal-v5.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-overlay-v5 {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 12, 0.9);
-            backdrop-filter: blur(10px);
-        }
-
-        .modal-content-v5 {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            background: var(--bg-midnight);
-            border: 1px solid var(--border-v5);
-            border-radius: 40px;
-            overflow: hidden;
-            transform: translateY(40px) scale(0.95);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .modal-v5.active .modal-content-v5 {
-            transform: translateY(0) scale(1);
-        }
-
-        .modal-close-v5 {
-            position: absolute;
-            top: 25px;
-            right: 25px;
-            width: 45px;
-            height: 45px;
-            background: var(--glass-v5);
-            border: 1px solid var(--border-v5);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #fff;
-            cursor: pointer;
-            z-index: 10;
-            transition: var(--transition-v5);
-        }
-
-        .modal-close-v5:hover {
-            background: #fff;
-            color: #000;
-            transform: rotate(90deg);
-        }
-
-        .modal-img-v5 {
-            height: 350px;
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .modal-body-v5 {
-            padding: 50px;
-        }
-
-        .modal-body-v5 h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .modal-body-v5 p {
-            margin-bottom: 40px;
-        }
-
-        .modal-details-v5 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-bottom: 40px;
-            padding: 30px;
-            background: var(--glass-v5);
-            border-radius: 24px;
-            border: 1px solid var(--border-v5);
-        }
-
-        .detail-item-v5 h4 {
-            color: var(--primary-v5);
-            text-transform: uppercase;
-            font-size: 0.75rem;
-            letter-spacing: 1.5px;
-            margin-bottom: 8px;
-        }
-
-        .detail-item-v5 span {
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        @media (max-width: 1024px) {
-            .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 200px; }
-            .bento-large { grid-column: span 2; grid-row: span 2; }
-        }
-
-        @media (max-width: 768px) {
-            .nav-actions { display: none; }
-            .mobile-toggle-v5 { display: block; }
-            .hero-v5 { padding: 150px 0 80px; }
-            .bento-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
-            .bento-large, .bento-medium { grid-column: span 1; grid-row: span 1; }
-            .ongs-grid-v5 { grid-template-columns: 1fr; }
-            .footer-top-v5 { flex-direction: column; gap: 40px; text-align: center; }
-            .footer-links-v5 { flex-direction: column; gap: 20px; align-items: center; }
-            .footer-bottom-v5 { flex-direction: column; gap: 20px; text-align: center; }
-            .modal-body-v5 { padding: 30px; }
-            .modal-body-v5 h2 { font-size: 2rem; }
-            .modal-details-v5 { grid-template-columns: 1fr; }
-        }
-
-        @media (max-width: 480px) {
-            h1 { font-size: 3rem; }
-            .hero-bottom p { font-size: 1.1rem; }
-            .cta-box { padding: 60px 20px; }
-            .btn-v5-large { width: 100%; text-align: center; }
-        }
-    </style>
+<html lang="pt-BR"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BackAI — investigue como modelos de IA aprendem, representam informação e desenvolvem comportamento.">
+  <title>BackAI — Inside the Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#050608; --panel:#0b0d11; --panel2:#101319;
+      --text:#f5f7fb; --muted:#8d95a3; --line:rgba(255,255,255,.10);
+      --blue:#6ea8ff; --violet:#9b7bff; --cyan:#6fffe9;
+      --green:#69e6a5; --radius:28px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif;overflow-x:hidden}
+    body:before{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:-2;
+      background:
+        radial-gradient(circle at 50% 0%,rgba(110,168,255,.12),transparent 32%),
+        radial-gradient(circle at 85% 45%,rgba(155,123,255,.07),transparent 25%);
+    }
+    body:after{
+      content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.18;
+      background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+                       linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+      background-size:64px 64px;
+      mask-image:linear-gradient(to bottom,black,transparent 75%);
+    }
+    a{color:inherit;text-decoration:none}
+    .container{width:min(1180px,90%);margin:auto}
+    .mono{font-family:"Space Mono",monospace}
+    .nav{
+      position:fixed;top:0;left:0;width:100%;z-index:50;
+      padding:22px 0;background:rgba(5,6,8,.72);backdrop-filter:blur(20px);
+      border-bottom:1px solid transparent;transition:.35s ease;
+    }
+    .nav.scrolled{padding:14px 0;border-color:var(--line);background:rgba(5,6,8,.92)}
+    .nav-inner{display:flex;align-items:center;justify-content:space-between}
+    .brand{font-size:1.35rem;font-weight:900;letter-spacing:-1px}
+    .brand span{color:var(--blue)}
+    .nav-links{display:flex;align-items:center;gap:30px;color:var(--muted);font-size:.9rem;font-weight:600}
+    .nav-links a:hover{color:white}
+    .github{padding:10px 16px;border:1px solid var(--line);border-radius:12px;color:white}
+    .locale{position:relative}
+    .locale-toggle{display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.035);color:white;font:600 .82rem Inter,system-ui,sans-serif;cursor:pointer;transition:.3s ease}
+    .locale-toggle:hover,.locale-toggle[aria-expanded="true"]{border-color:rgba(110,168,255,.55);background:rgba(110,168,255,.10)}
+    .locale-toggle .chevron{font-size:.7rem;color:var(--muted);transition:transform .25s ease}
+    .locale-toggle[aria-expanded="true"] .chevron{transform:rotate(180deg)}
+    .locale-menu{position:absolute;right:0;top:calc(100% + 10px);min-width:220px;padding:8px;border:1px solid var(--line);border-radius:16px;background:rgba(11,13,17,.98);box-shadow:0 20px 60px rgba(0,0,0,.42);opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s ease;z-index:60}
+    .locale-menu.open{opacity:1;visibility:visible;transform:translateY(0)}
+    .locale-menu button{width:100%;display:flex;align-items:center;gap:10px;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:#cbd2de;text-align:left;font:500 .83rem Inter,system-ui,sans-serif;cursor:pointer}
+    .locale-menu button:hover,.locale-menu button[aria-selected="true"]{background:rgba(110,168,255,.12);color:white}
+    .locale-menu button[aria-selected="true"]::after{content:"✓";margin-left:auto;color:var(--cyan)}
+    @media(max-width:850px){.locale-toggle{padding:9px 11px}.locale-menu{right:-4px}}
+    .hero{min-height:100vh;padding:180px 0 100px;display:grid;place-items:center;text-align:center}
+    .eyebrow{
+      display:inline-flex;gap:10px;align-items:center;border:1px solid var(--line);
+      background:rgba(255,255,255,.035);padding:9px 14px;border-radius:999px;
+      color:#aeb6c3;font-size:.75rem;text-transform:uppercase;letter-spacing:1.8px;margin-bottom:28px
+    }
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 15px var(--cyan)}
+    h1{font-size:clamp(4rem,10vw,8.8rem);line-height:.86;letter-spacing:-7px;font-weight:900;max-width:1050px;margin:auto}
+    .gradient{background:linear-gradient(110deg,#fff 20%,var(--blue) 52%,var(--violet));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .hero-copy{max-width:720px;margin:35px auto 0;color:var(--muted);font-size:1.2rem;line-height:1.75}
+    .hero-actions{display:flex;justify-content:center;gap:14px;margin-top:38px;flex-wrap:wrap}
+    .btn{padding:15px 22px;border-radius:14px;font-weight:700;border:1px solid var(--line);transition:.3s ease}
+    .btn-primary{background:white;color:#07080a;border-color:white}
+    .btn:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.35)}
+    .btn-primary:hover{box-shadow:0 16px 45px rgba(255,255,255,.12)}
+    .hero-terminal{
+      width:min(920px,100%);margin:90px auto 0;text-align:left;border:1px solid var(--line);
+      border-radius:22px;background:rgba(11,13,17,.8);box-shadow:0 35px 100px rgba(0,0,0,.45);overflow:hidden
+    }
+    .terminal-top{height:42px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 16px;gap:7px}
+    .terminal-top i{width:8px;height:8px;border-radius:50%;background:#555}
+    .terminal-title{margin-left:10px;color:#626b78;font-size:.72rem}
+    pre{padding:26px 30px;color:#b9c3d0;line-height:1.8;overflow:auto;font-size:.83rem}
+    .c{color:#697382}.k{color:#9b7bff}.f{color:#6ea8ff}.s{color:#69e6a5}.n{color:#fff}
+    section{padding:125px 0}
+    .section-label{color:var(--blue);font:700 .72rem "Space Mono",monospace;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px}
+    h2{font-size:clamp(2.4rem,5vw,4.4rem);line-height:1;letter-spacing:-3px}
+    .section-intro{color:var(--muted);max-width:650px;font-size:1.08rem;line-height:1.7;margin-top:20px}
+    .bento{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:55px}
+    .card{background:linear-gradient(145deg,rgba(255,255,255,.055),rgba(255,255,255,.018));border:1px solid var(--line);border-radius:var(--radius);padding:34px;position:relative;overflow:hidden;transition:.4s ease}
+    .card:before{content:"";position:absolute;width:180px;height:180px;right:-80px;top:-80px;border-radius:50%;background:rgba(110,168,255,.08);filter:blur(10px)}
+    .card:hover{transform:translateY(-6px);border-color:rgba(110,168,255,.35)}
+    .large{grid-column:span 2;grid-row:span 2;min-height:390px;display:flex;flex-direction:column;justify-content:flex-end}
+    .wide{grid-column:span 2}
+    .number{font:700 .7rem "Space Mono",monospace;color:#566070;letter-spacing:2px}
+    .icon{font-size:1.5rem;margin:30px 0 22px;color:var(--blue)}
+    .card h3{font-size:1.35rem;margin-bottom:10px}
+    .card p{color:var(--muted);line-height:1.65;font-size:.92rem}
+    .big-statement{font-size:clamp(2rem,4vw,3.4rem);line-height:1.15;letter-spacing:-2px;max-width:700px}
+    .timeline{margin-top:55px;border-top:1px solid var(--line)}
+    .step{display:grid;grid-template-columns:100px 1fr 1fr;gap:35px;padding:34px 0;border-bottom:1px solid var(--line);align-items:center}
+    .step-no{font:700 1rem "Space Mono",monospace;color:var(--blue)}
+    .step h3{font-size:1.35rem}
+    .step p{color:var(--muted);line-height:1.6}
+    .evolution{position:relative;margin-top:55px;padding:45px;border:1px solid var(--line);border-radius:var(--radius);background:#090b0f;overflow:hidden}
+    .evolution-line{height:2px;background:linear-gradient(90deg,var(--blue),var(--violet),var(--cyan));margin:55px 0 35px;position:relative}
+    .points{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+    .point{position:relative;color:var(--muted);font-size:.75rem}
+    .point:before{content:"";position:absolute;top:-42px;left:0;width:10px;height:10px;border-radius:50%;background:#dce8ff;box-shadow:0 0 18px rgba(110,168,255,.8)}
+    .point strong{display:block;color:white;font-size:.88rem;margin-bottom:7px}
+    .question{padding:100px 0;text-align:center}
+    .question h2{max-width:950px;margin:auto}
+    .question h2 em{font-style:normal;color:var(--blue)}
+    .code-section{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:55px}
+    .codebox{border:1px solid var(--line);border-radius:22px;background:#090b0f;overflow:hidden}
+    .codebox header{padding:13px 18px;border-bottom:1px solid var(--line);color:#687180;font:700 .7rem "Space Mono",monospace}
+    .codebox pre{min-height:280px}
+    .cta{padding:20px 0 125px}
+    .cta-box{padding:80px 40px;border:1px solid var(--line);border-radius:40px;text-align:center;background:
+      radial-gradient(circle at 50% 100%,rgba(110,168,255,.12),transparent 45%),#090b0f}
+    .cta-box p{color:var(--muted);margin:18px auto 30px;max-width:600px;line-height:1.7}
+    footer{padding:30px 0 55px;border-top:1px solid var(--line);color:#687180;font-size:.8rem}
+    .footer-inner{display:flex;justify-content:space-between;gap:20px}
+    @media(max-width:850px){
+      .nav-links a:not(.github){display:none}
+      h1{letter-spacing:-4px}
+      .bento{grid-template-columns:1fr}
+      .large,.wide{grid-column:span 1;grid-row:span 1}
+      .large{min-height:320px}
+      .step{grid-template-columns:60px 1fr}
+      .step p{grid-column:2}
+      .points{grid-template-columns:1fr;gap:40px}
+      .evolution-line{height:2px;margin-bottom:10px}
+      .point:before{top:-25px}
+      .code-section{grid-template-columns:1fr}
+      .footer-inner{flex-direction:column}
+    }
+    @media(max-width:500px){
+      section{padding:90px 0}
+      .hero{padding-top:145px}
+      h1{font-size:4rem}
+      .hero-copy{font-size:1rem}
+      .hero-terminal{margin-top:60px}
+      pre{font-size:.72rem;padding:20px}
+      .card{padding:27px}
+      .cta-box{padding:60px 25px}
+    }
+  </style>
 </head>
-<body class="midnight-theme">
-
-<!-- NAVBAR -->
-<header class="navbar-v5">
-    <nav class="container">
-        <div class="logo-v5">Inspire<span>teen</span></div>
-        <div class="nav-actions">
-            <a href="#ongs" class="nav-link-v5">Projetos</a>
-            <a href="#manifesto" class="nav-link-v5">Manifesto</a>
-            <a href="https://forms.gle/etLHzfPmfeoPQApUA" target="_blank" class="btn-v5-primary">Sou ONG</a>
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6S_54v66-8CspD5PJRTNnbk97rf_n4nrF7PyDYFhWQhJ4bg/viewform?usp=publish-editor" target="_blank" class="btn-v5-outline">Sou Voluntário</a>
+<body>
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="#">Back<span>AI</span></a>
+    <nav class="nav-links">
+      <a href="#idea">Ideia</a>
+      <a href="#inside">Inside</a>
+      <a href="#evolution">Training Dynamics</a>
+      <div class="locale">
+        <button class="locale-toggle" id="localeToggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="localeMenu">
+          <span id="localeFlag" aria-hidden="true">🇧🇷</span><span id="localeLabel">PT-BR</span><span class="chevron" aria-hidden="true">⌄</span>
+        </button>
+        <div class="locale-menu" id="localeMenu" role="menu" aria-label="Selecionar país e idioma">
+          <button type="button" role="menuitem" data-locale="pt-BR" data-flag="🇧🇷" aria-selected="true">🇧🇷 <span>Brasil · Português</span></button>
+          <button type="button" role="menuitem" data-locale="en-US" data-flag="🇺🇸" aria-selected="false">🇺🇸 <span>United States · English</span></button>
+          <button type="button" role="menuitem" data-locale="es-ES" data-flag="🇪🇸" aria-selected="false">🇪🇸 <span>España · Español</span></button>
+          <button type="button" role="menuitem" data-locale="fr-FR" data-flag="🇫🇷" aria-selected="false">🇫🇷 <span>France · Français</span></button>
+          <button type="button" role="menuitem" data-locale="ja-JP" data-flag="🇯🇵" aria-selected="false">🇯🇵 <span>日本 · 日本語</span></button>
         </div>
-        <div class="mobile-toggle-v5">
-            <i class="fas fa-bars"></i>
-        </div>
+      </div>
+      <a class="github" href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
     </nav>
+  </div>
 </header>
 
-<!-- HERO -->
-<section class="hero-v5">
+<main>
+  <section class="hero">
     <div class="container">
-        <div class="hero-top" data-aos="fade-up">
-            <span class="label-v5">Execução Real • Impacto Real</span>
-            <h1>
-                Jovens construindo 
-                <span class="gradient-v5">soluções reais</span><br>
-                para problemas que <span class="italic-v5">importam.</span>
-            </h1>
-        </div>
-        <div class="hero-bottom" data-aos="fade-up" data-aos-delay="200">
-            <p>
-                O Inspireteen conecta ONGs com desafios reais a squads de jovens desenvolvedores
-                que constroem e entregam sistemas prontos para uso.
-            </p>
-            <div class="hero-btns-v5">
-                <a href="#ongs" class="btn-v5-large">Ver Projetos Abertos</a>
-            </div>
-        </div>
-    </div>
-</section>
+      <div class="eyebrow"><span class="dot"></span> Experimental toolkit for AI research</div>
+      <h1>Look <span class="gradient">inside.</span><br>Understand why.</h1>
+      <p class="hero-copy">
+        BackAI é uma biblioteca Python para investigar o que acontece dentro de modelos de IA —
+        observando representações, ativações, attention e como esses mecanismos evoluem enquanto o modelo aprende.
+      </p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#idea">Explore the project ↓</a>
+        <a class="btn" href="#quickstart">See the concept</a>
+      </div>
 
-<!-- COMO FUNCIONA -->
-<section id="como-funciona" class="how-it-works-v5">
-    <div class="container">
-        <div class="section-header-v5" data-aos="fade-up">
-            <span class="section-subtitle">O Fluxo</span>
-            <h2>Como funciona</h2>
-            <p>Do problema à solução em 4 passos objetivos.</p>
-        </div>
-        <div class="bento-grid">
-            <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-                <div class="bento-icon"><i class="fas fa-hand-holding-heart"></i></div>
-                <h3>1. ONGs aplicam</h3>
-                <p>Organizações trazem desafios reais que precisam de tecnologia para escalar seu impacto.</p>
-            </div>
-            <div class="bento-item" data-aos="fade-up" data-aos-delay="200">
-                <div class="bento-icon"><i class="fas fa-users-gear"></i></div>
-                <h3>2. Formação de Squads</h3>
-                <p>Selecionamos jovens talentos para formar times multidisciplinares focados na execução.</p>
-            </div>
-            <div class="bento-item" data-aos="fade-up" data-aos-delay="300">
-                <div class="bento-icon"><i class="fas fa-code"></i></div>
-                <h3>3. Código em ação.</h3>
-                <p>Mão na massa. Código limpo, design moderno e foco total na necessidade da ONG.</p>
-            </div>
-            <div class="bento-item" data-aos="fade-up" data-aos-delay="400">
-                <div class="bento-icon"><i class="fas fa-rocket"></i></div>
-                <h3>4. Entrega e Uso</h3>
-                <p>O sistema é entregue pronto para uso, gerando valor imediato para a sociedade.</p>
-            </div>
-        </div>
-    </div>
-</section>
+      <div class="hero-terminal mono">
+        <div class="terminal-top"><i></i><i></i><i></i><span class="terminal-title">experiment.py</span></div>
+        <pre><span class="k">from</span> backai <span class="k">import</span> ModelObserver
 
-<!-- MANIFESTO -->
-<section id="manifesto" class="bento-section">
-    <div class="container">
-        <div class="bento-grid">
-            <div class="bento-item bento-large" data-aos="fade-right">
-                <span class="section-subtitle">Nosso DNA</span>
-                <h2>Não é sobre código.<br>É sobre <span class="gradient-v5">impacto real.</span></h2>
-                <p>
-                    Acreditamos que a tecnologia é a ferramenta mais poderosa para mudança social. 
-                    No Inspireteen, não fazemos "projetos de estudo", fazemos sistemas que mudam vidas.
-                </p>
-            </div>
-            <div class="bento-item" data-aos="fade-up">
-                <div class="bento-icon"><i class="fas fa-briefcase"></i></div>
-                <h3>Portfólio Real</h3>
-                <p>Saia do "Hello World" e construa soluções que pessoas reais usam todos os dias.</p>
-            </div>
-            <div class="bento-item" data-aos="fade-up" data-aos-delay="100">
-                <div class="bento-icon"><i class="fas fa-bolt"></i></div>
-                <h3>Execução Ágil</h3>
-                <p>Transformamos ideias em produtos funcionais com velocidade e qualidade profissional.</p>
-            </div>
-        </div>
-    </div>
-</section>
+observer = <span class="f">ModelObserver</span>(model)
 
-<!-- PROJETOS -->
-<section id="ongs" class="ongs-v5">
-    <div class="container">
-        <div class="section-header-v5" data-aos="fade-up">
-            <span class="section-subtitle">Oportunidades</span>
-            <h2>Projetos Abertos</h2>
-            <p>Escolha uma causa, entre em um squad e comece a construir.</p>
-        </div>
-        <div class="ongs-grid-v5" id="ongs-container-v5">
-            <!-- Injetado via JS -->
-        </div>
-    </div>
-</section>
+observer.<span class="f">track</span>(
+    checkpoints=<span class="s">"./checkpoints"</span>
+)
 
-<!-- CTA FINAL -->
-<section id="join" class="cta-v5">
-    <div class="container">
-        <div class="cta-box" data-aos="zoom-in">
-            <span class="label-v5">Pronto para começar?</span>
-            <h2>Faça parte da execução</h2>
-            <p>Seja você uma ONG precisando de ajuda ou um builder querendo impactar o mundo.</p>
-            <div class="cta-buttons">
-                <a href="https://forms.gle/etLHzfPmfeoPQApUA" target="_blank" class="btn-v5-primary">Quero inscrever minha ONG</a>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6S_54v66-8CspD5PJRTNnbk97rf_n4nrF7PyDYFhWQhJ4bg/viewform?usp=publish-editor" target="_blank" class="btn-v5-outline">Quero ser um voluntário</a>
-            </div>
-        </div>
+report = observer.<span class="f">analyze</span>()</pre>
+      </div>
     </div>
-</section>
+  </section>
 
-<!-- FOOTER -->
-<footer class="footer-v5">
+  <section id="idea">
     <div class="container">
-        <div class="footer-top-v5">
-            <div class="logo-v5">Inspire<span>teen</span></div>
-            <div class="footer-links-v5">
-                <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="#"><i class="fab fa-github"></i> GitHub</a>
-            </div>
-        </div>
-        <div class="footer-bottom-v5">
-            <p>© 2026 Inspireteen. Todos os direitos reservados.</p>
-            <p>Feito com <i class="fas fa-heart" style="color: var(--primary-v5);"></i> por quem executa.</p>
-        </div>
+      <div class="section-label">01 / The idea</div>
+      <h2>Não é sobre a saída.<br>É sobre o caminho.</h2>
+      <p class="section-intro">
+        Modelos modernos nos mostram muito bem entrada e saída. O BackAI quer abrir uma janela
+        para o espaço entre as duas — e transformar o treinamento de uma rede neural em um experimento observável.
+      </p>
+
+      <div class="bento">
+        <article class="card large">
+          <span class="number">CORE QUESTION</span>
+          <div class="icon">◉</div>
+          <div>
+            <p class="big-statement">“O que aconteceu dentro da IA para ela chegar a essa resposta?”</p>
+            <p style="margin-top:22px">E, principalmente: como esse funcionamento interno surgiu e mudou durante o treinamento?</p>
+          </div>
+        </article>
+        <article class="card">
+          <span class="number">01</span>
+          <div class="icon">⌁</div>
+          <h3>Activations</h3>
+          <p>Capture estados internos e compare como diferentes camadas respondem ao longo do aprendizado.</p>
+        </article>
+        <article class="card">
+          <span class="number">02</span>
+          <div class="icon">◇</div>
+          <h3>Representations</h3>
+          <p>Investigue como informações são representadas e reorganizadas dentro do modelo.</p>
+        </article>
+        <article class="card wide">
+          <span class="number">03 — 04</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:25px;margin-top:28px">
+            <div><h3>Attention</h3><p style="margin-top:10px">Observe quais tokens diferentes cabeças priorizam e como os padrões mudam.</p></div>
+            <div><h3>Behavior</h3><p style="margin-top:10px">Relacione mudanças internas com mudanças observáveis no comportamento.</p></div>
+          </div>
+        </article>
+      </div>
     </div>
+  </section>
+
+  <section id="inside">
+    <div class="container">
+      <div class="section-label">02 / Inside the model</div>
+      <h2>De uma fotografia<br>para um <span class="gradient">filme.</span></h2>
+      <p class="section-intro">
+        Em vez de olhar apenas para o checkpoint final, o BackAI acompanha vários estados do treinamento.
+        A pergunta deixa de ser “como funciona?” e passa a ser “como passou a funcionar assim?”.
+      </p>
+
+      <div class="timeline">
+        <div class="step"><span class="step-no">00</span><h3>Checkpoint</h3><p>Salve estados do modelo em diferentes momentos do treinamento.</p></div>
+        <div class="step"><span class="step-no">01</span><h3>Observe</h3><p>Capture ativações, representações e padrões de attention.</p></div>
+        <div class="step"><span class="step-no">02</span><h3>Compare</h3><p>Meça como o estado interno muda entre checkpoints.</p></div>
+        <div class="step"><span class="step-no">03</span><h3>Relacione</h3><p>Compare essas mudanças com evolução de desempenho e comportamento.</p></div>
+        <div class="step"><span class="step-no">04</span><h3>Intervenha</h3><p>Futuramente, altere componentes internos e teste hipóteses causais.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="evolution">
+    <div class="container">
+      <div class="section-label">03 / Training dynamics</div>
+      <h2>Veja uma capacidade<br><span class="gradient">nascer.</span></h2>
+      <p class="section-intro">
+        O objetivo não é apenas medir loss. É investigar se mudanças internas aparecem antes,
+        durante ou depois de uma capacidade se tornar observável.
+      </p>
+
+      <div class="evolution">
+        <span class="mono" style="color:#6f7886;font-size:.72rem">MODEL TRAINING / 100k STEPS</span>
+        <div class="evolution-line"></div>
+        <div class="points">
+          <div class="point"><strong>Step 0</strong>Representações iniciais</div>
+          <div class="point"><strong>Step 25k</strong>Ativações começam a se reorganizar</div>
+          <div class="point"><strong>Step 41k</strong>Mudança interna detectável</div>
+          <div class="point"><strong>Step 47k</strong>Capacidade aparece no comportamento</div>
+          <div class="point"><strong>Step 100k</strong>Modelo final</div>
+        </div>
+      </div>
+
+      <div class="question">
+        <div class="section-label">The scientific question</div>
+        <h2>“A mudança interna apareceu <em>antes</em> do comportamento?”</h2>
+      </div>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="container">
+      <div class="section-label">04 / Research mindset</div>
+      <h2>Não é “olha que legal”.<br>É <span class="gradient">experimento.</span></h2>
+      <p class="section-intro">
+        O projeto foi pensado para crescer como ferramenta experimental: problema → hipótese → experimento →
+        baseline → medição → análise → repetição → conclusão.
+      </p>
+
+      <div class="code-section" id="quickstart">
+        <div class="codebox">
+          <header>QUESTION</header>
+          <pre class="mono"><span class="c"># Hypothesis</span>
+A representation emerges
+before the model acquires
+the corresponding behavior.
+
+<span class="k">if</span> internal_change <span class="k">before</span> behavior_change:
+    investigate(<span class="s">"emergence"</span>)</pre>
+        </div>
+        <div class="codebox">
+          <header>INTERVENTION / FUTURE</header>
+          <pre class="mono"><span class="c"># Causal experiment</span>
+original = model(prompt)
+
+intervene(model, component)
+
+changed = model(prompt)
+
+compare(original, changed)</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">05 / Roadmap</div>
+      <h2>Start small.<br>Go <span class="gradient">deep.</span></h2>
+      <div class="bento">
+        <article class="card"><span class="number">v0.1</span><div class="icon">01</div><h3>Observer</h3><p>Ativações, outputs e checkpoints.</p></article>
+        <article class="card"><span class="number">v0.2</span><div class="icon">02</div><h3>Compare</h3><p>Comparação entre estados internos.</p></article>
+        <article class="card"><span class="number">v0.3</span><div class="icon">03</div><h3>Representations</h3><p>Evolução das representações.</p></article>
+        <article class="card"><span class="number">v0.4</span><div class="icon">04</div><h3>Attention</h3><p>Padrões de atenção.</p></article>
+        <article class="card wide"><span class="number">v0.5 → v0.7</span><div class="icon">05—07</div><h3>Behavior · Emergence · Intervention</h3><p>Conectar mecanismos internos ao comportamento, estudar o surgimento de capacidades e testar intervenções.</p></article>
+        <article class="card wide"><span class="number">v1.0</span><div class="icon">∞</div><h3>Experimental platform</h3><p>Observar → comparar → formular hipóteses → intervir → estudar a evolução interna de modelos de IA.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <div class="cta-box">
+        <div class="section-label">BackAI</div>
+        <h2>Study how intelligence<br><span class="gradient">becomes itself.</span></h2>
+        <p>Uma biblioteca Python para sair da caixa-preta e transformar internals de modelos em objetos de investigação.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="https://github.com/" target="_blank" rel="noopener">View on GitHub ↗</a>
+          <a class="btn" href="#idea">Read the idea</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="container footer-inner">
+    <span>© 2026 BackAI</span>
+    <span class="mono">observe · compare · intervene</span>
+  </div>
 </footer>
 
-<!-- MODAL ESTRUTURA -->
-<div class="modal-v5" id="project-modal">
-    <div class="modal-overlay-v5"></div>
-    <div class="modal-content-v5">
-        <div class="modal-close-v5"><i class="fas fa-times"></i></div>
-        <div class="modal-img-v5" id="modal-img"></div>
-        <div class="modal-body-v5">
-            <span class="bento-tag" id="modal-tag">Categoria</span>
-            <h2 id="modal-title">Título do Projeto</h2>
-            <p id="modal-desc">Descrição detalhada do projeto aparecerá aqui.</p>
-            
-            <div class="modal-details-v5">
-                <div class="detail-item-v5">
-                    <h4>Status</h4>
-                    <span id="modal-status">Inscrições Abertas</span>
-                </div>
-                <div class="detail-item-v5">
-                    <h4>Vagas</h4>
-                    <span id="modal-vagas">5-8 Builders</span>
-                </div>
-                <div class="detail-item-v5">
-                    <h4>Duração</h4>
-                    <span id="modal-duration">8 Semanas</span>
-                </div>
-                <div class="detail-item-v5">
-                    <h4>Stack</h4>
-                    <span id="modal-stack">React, Node.js, Tailwind</span>
-                </div>
-            </div>
-
-            <div class="cta-buttons" style="justify-content: flex-start;">
-                <a id="modal-cta" href="https://docs.google.com/forms/d/e/1FAIpQLSd6S_54v66-8CspD5PJRTNnbk97rf_n4nrF7PyDYFhWQhJ4bg/viewform?usp=publish-editor" target="_blank" class="btn-v5-primary">Quero Participar</a>
-                <button class="btn-v5-outline modal-close-btn">Fechar</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    // 1. Inicializar AOS
-    AOS.init({
-        duration: 1000,
-        once: true,
-        offset: 100,
-        easing: 'cubic-bezier(0.16, 1, 0.3, 1)'
-    });
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 30));
 
-    // 2. Dados das ONGs
-    const ongs = [
-        {
-            name: "NanoWait",
-            desc: "Motor de execução adaptativo que substitui time.sleep() por espera inteligente baseada no sistema.",
-            fullDesc: "NanoWait é um execution engine para Python que adapta o tempo de espera com base na CPU, memória e rede, eliminando delays fixos. Já ultrapassa 17 mil downloads e é usado em mais de 50 países como solução real de automação inteligente.",
-            tag: "Lib Python",
-            image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97",
-            status: "aberta", // aberta ou fechada
-            duration: "Indeterminado",
-            techs: "Python",
-            vagas: "2-4 Builders"
-        },
-        {
-            name: "AI Critic",
-            desc: "Engine de avaliação que transforma métricas de ML em decisões reais de deploy.",
-            fullDesc: "AI Critic avalia modelos de machine learning com um pipeline baseado em grafos, gerando um score de risco (0–100) e podendo bloquear deploys inseguros. Já ultrapassa 11 mil downloads e é usado em mais de 40 países.",
-            tag: "Lib Python",
-            image: "https://images.unsplash.com/photo-1555949963-aa79dcee981c",
-            status: "aberta", // aberta ou fechada
-            duration: "Indeterminado",
-            techs: "Python",
-            vagas: "2-4 Builders"
-        }
-    ];
+  const localeToggle = document.getElementById('localeToggle');
+  const localeMenu = document.getElementById('localeMenu');
+  const localeLabel = document.getElementById('localeLabel');
+  const localeFlag = document.getElementById('localeFlag');
+  const localeOptions = [...localeMenu.querySelectorAll('[data-locale]')];
 
-    const ongsContainer = document.getElementById('ongs-container-v5');
-    const modal = document.getElementById('project-modal');
-    const modalClose = document.querySelectorAll('.modal-close-v5, .modal-overlay-v5, .modal-close-btn');
-    
-    // Elementos do Modal
-    const mTitle = document.getElementById('modal-title');
-    const mTag = document.getElementById('modal-tag');
-    const mDesc = document.getElementById('modal-desc');
-    const mImg = document.getElementById('modal-img');
-    const mStatus = document.getElementById('modal-status');
-    const mDuration = document.getElementById('modal-duration');
-    const mStack = document.getElementById('modal-stack');
-    const mVagas = document.getElementById('modal-vagas');
-    const mCTA = document.getElementById('modal-cta');
-
-    if (ongsContainer) {
-        ongs.forEach((ong, index) => {
-            const card = document.createElement('div');
-            card.className = 'ong-card-v5';
-            card.setAttribute('data-aos', 'fade-up');
-            card.setAttribute('data-aos-delay', (index * 100).toString());
-
-            const statusClass = ong.status === 'aberta' ? 'open' : 'closed';
-            const statusText = ong.status === 'aberta' ? 'Inscrições Abertas' : 'Inscrições Fechadas';
-
-            card.innerHTML = `
-                <div class="ong-img-v5" style="background-image: url('${ong.image}')">
-                    <div class="ong-overlay-v5"></div>
-                </div>
-                <div class="ong-body-v5">
-                    <div>
-                        <span class="bento-tag">${ong.tag}</span>
-                        <span class="status-tag ${statusClass}">${statusText}</span>
-                    </div>
-                    <h3>${ong.name}</h3>
-                    <p>${ong.desc}</p>
-                    <div class="ong-actions-v5">
-                        <button class="btn-v5-primary btn-view-more" data-index="${index}">Ver Detalhes</button>
-                        ${ong.status === 'aberta' 
-                            ? `<a href="https://docs.google.com/forms/d/e/1FAIpQLSd6S_54v66-8CspD5PJRTNnbk97rf_n4nrF7PyDYFhWQhJ4bg/viewform?usp=publish-editor" target="_blank" class="btn-v5-outline">Participar</a>`
-                            : `<button class="btn-v5-outline" disabled style="opacity: 0.5; cursor: not-allowed;">Encerrado</button>`
-                        }
-                    </div>
-                </div>
-            `;
-            ongsContainer.appendChild(card);
-        });
-
-        // Evento para abrir modal
-        document.querySelectorAll('.btn-view-more').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const index = e.target.getAttribute('data-index');
-                const project = ongs[index];
-                
-                mTitle.innerText = project.name;
-                mTag.innerText = project.tag;
-                mDesc.innerText = project.fullDesc || project.desc;
-                mImg.style.backgroundImage = `url('${project.image}')`;
-                
-                // Novos campos
-                mStatus.innerText = project.status === 'aberta' ? 'Inscrições Abertas' : 'Inscrições Fechadas';
-                mStatus.style.color = project.status === 'aberta' ? 'var(--status-open)' : 'var(--status-closed)';
-                mDuration.innerText = project.duration || 'A definir';
-                mStack.innerText = project.techs || 'A definir';
-                mVagas.innerText = project.vagas || '5-8 Builders';
-
-                // Ajuste do CTA no modal
-                if (project.status === 'aberta') {
-                    mCTA.style.display = 'inline-block';
-                    mCTA.innerText = 'Quero Participar';
-                } else {
-                    mCTA.style.display = 'none';
-                }
-                
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden'; // Trava scroll
-            });
-        });
+  const translations = {
+    'pt-BR': {
+      '.nav-links a[href="#idea"]': 'Ideia', '.nav-links a[href="#inside"]': 'Dentro', '.nav-links a[href="#evolution"]': 'Dinâmica do treino',
+      '.hero .eyebrow': '<span class="dot"></span> Ferramenta experimental para pesquisa em IA',
+      '.hero h1': 'Olhe <span class="gradient">para dentro.</span><br>Entenda o porquê.',
+      '.hero-copy': 'BackAI é uma biblioteca Python para investigar o que acontece dentro de modelos de IA — observando representações, ativações, attention e como esses mecanismos evoluem enquanto o modelo aprende.',
+      '.hero-actions .btn-primary': 'Explore o projeto ↓', '.hero-actions .btn[href="#quickstart"]': 'Veja o conceito',
+      '#idea .section-label': '01 / A ideia', '#idea h2': 'Não é sobre a saída.<br>É sobre o caminho.',
+      '#idea .section-intro': 'Modelos modernos nos mostram muito bem entrada e saída. O BackAI quer abrir uma janela para o espaço entre as duas — e transformar o treinamento de uma rede neural em um experimento observável.',
+      '#inside .section-label': '02 / Dentro do modelo', '#inside h2': 'De uma fotografia<br>para um <span class="gradient">filme.</span>',
+      '#inside .section-intro': 'Em vez de olhar apenas para o checkpoint final, o BackAI acompanha vários estados do treinamento. A pergunta deixa de ser “como funciona?” e passa a ser “como passou a funcionar assim?”.',
+      '#evolution .section-label': '03 / Dinâmica do treino', '#evolution h2': 'Veja uma capacidade<br><span class="gradient">nascer.</span>',
+      '#evolution .section-intro': 'O objetivo não é apenas medir loss. É investigar se mudanças internas aparecem antes, durante ou depois de uma capacidade se tornar observável.',
+      '#method .section-label': '04 / Mentalidade de pesquisa', '#method h2': 'Não é “olha que legal”.<br>É <span class="gradient">experimento.</span>',
+      '#method .section-intro': 'O projeto foi pensado para crescer como ferramenta experimental: problema → hipótese → experimento → baseline → medição → análise → repetição → conclusão.',
+      'body > main > section:nth-of-type(5) .section-label': '05 / Roadmap', 'body > main > section:nth-of-type(5) h2': 'Comece pequeno.<br>Vá <span class="gradient">fundo.</span>',
+      '.cta-box h2': 'Estude como a inteligência<br><span class="gradient">se torna ela mesma.</span>', '.cta-box p': 'Uma biblioteca Python para sair da caixa-preta e transformar internals de modelos em objetos de investigação.',
+      '.cta-box .btn-primary': 'Ver no GitHub ↗', '.cta-box .btn[href="#idea"]': 'Ler a ideia', 'footer .mono': 'observar · comparar · intervir'
+    },
+    'en-US': {
+      '.nav-links a[href="#idea"]': 'The idea', '.nav-links a[href="#inside"]': 'Inside', '.nav-links a[href="#evolution"]': 'Training dynamics',
+      '.hero .eyebrow': '<span class="dot"></span> Experimental toolkit for AI research', '.hero h1': 'Look <span class="gradient">inside.</span><br>Understand why.',
+      '.hero-copy': 'BackAI is a Python library for investigating what happens inside AI models — observing representations, activations, attention, and how these mechanisms evolve as a model learns.',
+      '.hero-actions .btn-primary': 'Explore the project ↓', '.hero-actions .btn[href="#quickstart"]': 'See the concept',
+      '#idea .section-label': '01 / The idea', '#idea h2': 'It is not about the output.<br>It is about the path.',
+      '#idea .section-intro': 'Modern models show us input and output very well. BackAI opens a window into the space between them — turning neural network training into an observable experiment.',
+      '#inside .section-label': '02 / Inside the model', '#inside h2': 'From a snapshot<br>to a <span class="gradient">film.</span>',
+      '#inside .section-intro': 'Instead of looking only at the final checkpoint, BackAI follows multiple training states. The question changes from “how does it work?” to “how did it come to work this way?”.',
+      '#evolution .section-label': '03 / Training dynamics', '#evolution h2': 'Watch a capability<br><span class="gradient">emerge.</span>',
+      '#evolution .section-intro': 'The goal is not only to measure loss. It is to investigate whether internal changes appear before, during, or after a capability becomes observable.',
+      '#method .section-label': '04 / Research mindset', '#method h2': 'Not “look how cool”.<br>It is an <span class="gradient">experiment.</span>',
+      '#method .section-intro': 'The project is designed to grow as an experimental tool: problem → hypothesis → experiment → baseline → measurement → analysis → repetition → conclusion.',
+      'body > main > section:nth-of-type(5) .section-label': '05 / Roadmap', 'body > main > section:nth-of-type(5) h2': 'Start small.<br>Go <span class="gradient">deep.</span>',
+      '.cta-box h2': 'Study how intelligence<br><span class="gradient">becomes itself.</span>', '.cta-box p': 'A Python library for opening the black box and turning model internals into objects of investigation.',
+      '.cta-box .btn-primary': 'View on GitHub ↗', '.cta-box .btn[href="#idea"]': 'Read the idea', 'footer .mono': 'observe · compare · intervene'
+    },
+    'es-ES': {
+      '.nav-links a[href="#idea"]': 'La idea', '.nav-links a[href="#inside"]': 'Interior', '.nav-links a[href="#evolution"]': 'Dinámica del entrenamiento',
+      '.hero .eyebrow': '<span class="dot"></span> Herramienta experimental para investigar IA', '.hero h1': 'Mira <span class="gradient">adentro.</span><br>Entiende por qué.',
+      '.hero-copy': 'BackAI es una biblioteca Python para investigar qué ocurre dentro de los modelos de IA — observando representaciones, activaciones, atención y cómo evolucionan mientras el modelo aprende.',
+      '.hero-actions .btn-primary': 'Explorar el proyecto ↓', '.hero-actions .btn[href="#quickstart"]': 'Ver el concepto',
+      '#idea .section-label': '01 / La idea', '#idea h2': 'No se trata del resultado.<br>Se trata del camino.', '#idea .section-intro': 'Los modelos modernos muestran muy bien la entrada y la salida. BackAI abre una ventana al espacio entre ambas y convierte el entrenamiento en un experimento observable.',
+      '#inside .section-label': '02 / Dentro del modelo', '#inside h2': 'De una fotografía<br>a una <span class="gradient">película.</span>', '#inside .section-intro': 'En lugar de mirar solo el checkpoint final, BackAI sigue varios estados del entrenamiento. La pregunta pasa de “¿cómo funciona?” a “¿cómo llegó a funcionar así?”.',
+      '#evolution .section-label': '03 / Dinámica del entrenamiento', '#evolution h2': 'Observa cómo nace<br>una <span class="gradient">capacidad.</span>', '#evolution .section-intro': 'El objetivo no es solo medir la pérdida, sino investigar si los cambios internos aparecen antes, durante o después de que una capacidad sea observable.',
+      '#method .section-label': '04 / Mentalidad de investigación', '#method h2': 'No es “qué genial”.<br>Es un <span class="gradient">experimento.</span>', '#method .section-intro': 'El proyecto está pensado para crecer como herramienta experimental: problema → hipótesis → experimento → referencia → medición → análisis → repetición → conclusión.',
+      'body > main > section:nth-of-type(5) .section-label': '05 / Hoja de ruta', 'body > main > section:nth-of-type(5) h2': 'Empieza pequeño.<br>Ve <span class="gradient">profundo.</span>', '.cta-box h2': 'Estudia cómo la inteligencia<br><span class="gradient">se convierte en sí misma.</span>', '.cta-box p': 'Una biblioteca Python para abrir la caja negra y convertir los elementos internos de los modelos en objetos de investigación.', '.cta-box .btn-primary': 'Ver en GitHub ↗', '.cta-box .btn[href="#idea"]': 'Leer la idea', 'footer .mono': 'observar · comparar · intervenir'
+    },
+    'fr-FR': {
+      '.nav-links a[href="#idea"]': 'L’idée', '.nav-links a[href="#inside"]': 'À l’intérieur', '.nav-links a[href="#evolution"]': 'Dynamique de l’entraînement', '.hero .eyebrow': '<span class="dot"></span> Boîte à outils expérimentale pour la recherche en IA', '.hero h1': 'Regardez <span class="gradient">à l’intérieur.</span><br>Comprenez pourquoi.', '.hero-copy': 'BackAI est une bibliothèque Python pour étudier ce qui se passe à l’intérieur des modèles d’IA — représentations, activations, attention et évolution des mécanismes pendant l’apprentissage.', '.hero-actions .btn-primary': 'Explorer le projet ↓', '.hero-actions .btn[href="#quickstart"]': 'Voir le concept', '#idea .section-label': '01 / L’idée', '#idea h2': 'Il ne s’agit pas du résultat.<br>Il s’agit du chemin.', '#idea .section-intro': 'Les modèles modernes montrent très bien l’entrée et la sortie. BackAI ouvre une fenêtre sur l’espace entre les deux et transforme l’entraînement en expérience observable.', '#inside .section-label': '02 / À l’intérieur du modèle', '#inside h2': 'D’une photo<br>à un <span class="gradient">film.</span>', '#inside .section-intro': 'Au lieu de regarder seulement le checkpoint final, BackAI suit plusieurs états de l’entraînement. La question devient « comment en est-il arrivé à fonctionner ainsi ? ».', '#evolution .section-label': '03 / Dynamique de l’entraînement', '#evolution h2': 'Voyez une capacité<br><span class="gradient">émerger.</span>', '#evolution .section-intro': 'L’objectif n’est pas seulement de mesurer la loss, mais d’étudier si les changements internes apparaissent avant, pendant ou après une capacité observable.', '#method .section-label': '04 / Esprit de recherche', '#method h2': 'Pas « regardez comme c’est cool ».<br>C’est une <span class="gradient">expérience.</span>', '#method .section-intro': 'Le projet est conçu comme un outil expérimental : problème → hypothèse → expérience → référence → mesure → analyse → répétition → conclusion.', 'body > main > section:nth-of-type(5) .section-label': '05 / Feuille de route', 'body > main > section:nth-of-type(5) h2': 'Commencez petit.<br>Allez <span class="gradient">en profondeur.</span>', '.cta-box h2': 'Étudiez comment l’intelligence<br><span class="gradient">devient elle-même.</span>', '.cta-box p': 'Une bibliothèque Python pour ouvrir la boîte noire et transformer les mécanismes internes des modèles en objets d’étude.', '.cta-box .btn-primary': 'Voir sur GitHub ↗', '.cta-box .btn[href="#idea"]': 'Lire l’idée', 'footer .mono': 'observer · comparer · intervenir'
+    },
+    'ja-JP': {
+      '.nav-links a[href="#idea"]': 'アイデア', '.nav-links a[href="#inside"]': '内部を見る', '.nav-links a[href="#evolution"]': '学習のダイナミクス', '.hero .eyebrow': '<span class="dot"></span> AI研究のための実験ツール', '.hero h1': '<span class="gradient">内部を見て、</span><br>理由を理解する。', '.hero-copy': 'BackAIは、AIモデルの内部で何が起きているかを調べるPythonライブラリです。表現、活性化、Attention、そして学習中の変化を観察します。', '.hero-actions .btn-primary': 'プロジェクトを見る ↓', '.hero-actions .btn[href="#quickstart"]': 'コンセプトを見る', '#idea .section-label': '01 / アイデア', '#idea h2': '出力だけではない。<br>そこに至る道筋を見る。', '#idea .section-intro': '現代のモデルは入力と出力をよく見せてくれます。BackAIはその間を観察し、ニューラルネットワークの学習を実験として捉えます。', '#inside .section-label': '02 / モデルの内部', '#inside h2': '一枚の写真から<br><span class="gradient">動画</span>へ。', '#inside .section-intro': '最終チェックポイントだけでなく、学習中の複数の状態を追跡します。「どう動くか」から「なぜそう動くようになったか」へ問いを変えます。', '#evolution .section-label': '03 / 学習のダイナミクス', '#evolution h2': '能力が<br><span class="gradient">生まれる瞬間。</span>', '#evolution .section-intro': '損失を測るだけでなく、能力が観察可能になる前・最中・後に内部変化が現れるかを調べます。', '#method .section-label': '04 / 研究の姿勢', '#method h2': '「すごい」で終わらせない。<br><span class="gradient">実験</span>にする。', '#method .section-intro': '問題 → 仮説 → 実験 → ベースライン → 測定 → 分析 → 再現 → 結論という実験ツールとして成長する設計です。', 'body > main > section:nth-of-type(5) .section-label': '05 / ロードマップ', 'body > main > section:nth-of-type(5) h2': '小さく始めて、<br><span class="gradient">深く</span>進む。', '.cta-box h2': '知能がどのように<br><span class="gradient">形作られるかを研究する。</span>', '.cta-box p': 'ブラックボックスを開き、モデル内部を研究対象に変えるPythonライブラリです。', '.cta-box .btn-primary': 'GitHubで見る ↗', '.cta-box .btn[href="#idea"]': 'アイデアを読む', 'footer .mono': '観察 · 比較 · 介入'
     }
+  };
 
-    // Fechar Modal
-    modalClose.forEach(close => {
-        close.addEventListener('click', () => {
-            modal.classList.remove('active');
-            document.body.style.overflow = 'auto';
-        });
+  function applyTranslations(locale) {
+    const dictionary = translations[locale] || translations['pt-BR'];
+    Object.entries(dictionary).forEach(([selector, value]) => {
+      document.querySelectorAll(selector).forEach(element => element.innerHTML = value);
     });
+  }
 
-    // 3. Scroll Suave
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            
-            if (targetElement) {
-                const headerOffset = 80;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+  function setLocale(option) {
+    const locale = option.dataset.locale;
+    document.documentElement.lang = locale;
+    applyTranslations(locale);
+    localeLabel.textContent = locale;
+    localeFlag.textContent = option.dataset.flag;
+    localeOptions.forEach(item => item.setAttribute('aria-selected', String(item === option)));
+    localStorage.setItem('backai-locale', locale);
+    localeMenu.classList.remove('open');
+    localeToggle.setAttribute('aria-expanded', 'false');
+  }
 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                });
-            }
-        });
-    });
+  localeToggle.addEventListener('click', () => {
+    const isOpen = localeMenu.classList.toggle('open');
+    localeToggle.setAttribute('aria-expanded', String(isOpen));
+  });
 
-    // 4. Efeito Navbar
-    const navbar = document.querySelector('.navbar-v5');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.style.padding = '15px 0';
-            navbar.style.background = 'rgba(10, 10, 12, 0.95)';
-            navbar.style.borderBottomColor = 'rgba(255, 255, 255, 0.1)';
-        } else {
-            navbar.style.padding = '25px 0';
-            navbar.style.background = 'rgba(10, 10, 12, 0.8)';
-            navbar.style.borderBottomColor = 'transparent';
-        }
-    });
+  localeOptions.forEach(option => option.addEventListener('click', () => setLocale(option)));
 
-    // 5. Menu Mobile
-    const mobileToggle = document.querySelector('.mobile-toggle-v5');
-    const navActions = document.querySelector('.nav-actions');
-    
-    if (mobileToggle) {
-        mobileToggle.addEventListener('click', () => {
-            const isFlex = navActions.style.display === 'flex';
-            navActions.style.display = isFlex ? 'none' : 'flex';
-            if (!isFlex) {
-                navActions.style.flexDirection = 'column';
-                navActions.style.position = 'absolute';
-                navActions.style.top = '100%';
-                navActions.style.left = '0';
-                navActions.style.width = '100%';
-                navActions.style.background = 'rgba(10, 10, 12, 0.98)';
-                navActions.style.padding = '40px';
-                navActions.style.textAlign = 'center';
-                navActions.style.gap = '25px';
-                navActions.style.borderBottom = '1px solid var(--border-v5)';
-            }
-        });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('.locale')) {
+      localeMenu.classList.remove('open');
+      localeToggle.setAttribute('aria-expanded', 'false');
     }
-});
+  });
+
+  const savedLocale = localStorage.getItem('backai-locale');
+  const savedOption = localeOptions.find(option => option.dataset.locale === savedLocale);
+  if (savedOption) setLocale(savedOption);
 </script>
-</body>
-</html>
+
+
+</body></html>
